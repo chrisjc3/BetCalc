@@ -30,9 +30,9 @@ def runGetRates():
 def getProb(val):
     try:
         digits = float(val)
-        if odds_switch.get() == "-":
+        if odds_switch.get() == "plus":
             ans = 100/(digits+100)
-        if odds_switch.get() == "+":
+        if odds_switch.get() == "minus":
             ans = (-1*-digits)/((-1*-digits)+100)
         ans = round(ans*100,2)
         lsum2.insert(END, "Implied Probabity: " + str(ans))
@@ -67,6 +67,7 @@ e = tk.Entry(master, textvariable=v1)
 
 label2 = tk.Label(master, text="Units to burn")
 w = tk.Entry(master, textvariable=v2)
+
 lsum1 = tk.Text(master, height=1, width=25, bg='lightgrey', relief='flat')
 lsum1.insert(END, "Waiting....")
 lsum1.config(width=25,state=DISABLED) # forbid text edition
@@ -81,25 +82,25 @@ lsum2.insert(END, "Waiting....")
 lsum2.config(width=25,state=DISABLED) # forbid text edition
 d = tk.Button(master, text="Probability", command=runGetProb)
 
-odds_switch = tk.StringVar(value="-")
+odds_switch = tk.StringVar(value="plus")
 plus_button = tk.Radiobutton(master, text="+", variable=odds_switch,
-                            indicatoron=False, value="+", width=8)
+                            indicatoron=False, value="plus", width=8)
 minus_button = tk.Radiobutton(master, text="-", variable=odds_switch,
-                            indicatoron=False, value="-", width=8)
+                            indicatoron=False, value="minus", width=8)
 
-label1.grid(row=0, column=0, sticky=N+W)
-e.grid(row=1, column=0, sticky=N+W)
-label2.grid(row=0, column=0, sticky=N+E)
-w.grid(row=1, column=0, sticky=N+E)
-lsum1.grid(row=2, column=0, sticky=W+E+N+S)
-b.grid(row=3, column=0, sticky=W+E+N+S)
-c.grid(row=4, column=0, sticky=W+E+N+S)
+label1.grid(row=0, column=0, sticky=N+W,padx=5)
+e.grid(row=1, column=0, sticky=W,padx=5)
+label2.grid(row=0, column=0, sticky=N+E,padx=5)
+w.grid(row=1, column=0, sticky=E,padx=5)
+lsum1.grid(row=2, column=0, sticky=W+E+N+S,padx=5)
+b.grid(row=3, column=0, sticky=W+E+N+S,padx=5)
+c.grid(row=4, column=0, sticky=W+E+N+S,padx=5)
 
 label3.grid(row=0, column=2,columnspan=2,sticky=W+E+N+S)
 plus_button.grid(row=1, column=2,sticky=W+E+N+S)
 minus_button.grid(row=1, column=3,sticky=W+E+N+S)
 
-j.grid(row=2, column=2,columnspan=2)
+j.grid(row=2, column=2,columnspan=2,sticky=W+E+N+S)
 lsum2.grid(row=3, column=2, columnspan=2,sticky=W+E+N+S)
 d.grid(row=4, column=2, columnspan=2,sticky=W+E+N+S)
 
