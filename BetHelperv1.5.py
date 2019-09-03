@@ -44,9 +44,9 @@ def runGetProb():
         val = str(odds.get())
         lsum2.config(state=NORMAL)
         lsum2.delete(1.0, END)
+        getProb(val)
     except:
         lsum2.insert(END, "Enter actual Odds please.")
-    getProb(val)
     lsum2.config(state=DISABLED)
 
 master = tk.Tk()
