@@ -49,6 +49,34 @@ def runGetProb():
         lsum2.insert(END, "Enter actual Odds please.")
     lsum2.config(state=DISABLED)
 
+
+def call_minustoggle(event):
+    odds_switch.set("minus")
+    odds.set("")
+    j.focus_set()
+    
+def call_plustoggle(event):
+    odds_switch.set("plus")
+    odds.set("")
+    j.focus_set()
+    
+def call_enterproc(event):
+    try:
+        runGetRates()
+    except: pass
+    try:
+        runGetProb()
+    except: pass
+
+def call_bankrollent(event):
+    v1.set("")
+    e.focus_set()
+
+def call_unitent(event):
+    v2.set("")
+    w.focus_set()
+
+
 master = tk.Tk()
 master.title("BetUnitCalc")
 ##master.geometry("430x200")
@@ -104,6 +132,11 @@ j.grid(row=2, column=2,columnspan=2,sticky=W+E+N+S)
 lsum2.grid(row=3, column=2, columnspan=2,sticky=W+E+N+S)
 d.grid(row=4, column=2, columnspan=2,sticky=W+E+N+S)
 
+master.bind("-", call_minustoggle)
+master.bind("+", call_plustoggle)
+master.bind("<Return>", call_enterproc)
+master.bind("/", call_bankrollent)
+master.bind("*", call_unitent)
 
 tk.mainloop()
 
