@@ -72,10 +72,6 @@ def call_bankrollent(event):
     v1.set("")
     e.focus_set()
 
-def call_unitent(event):
-    v2.set("")
-    w.focus_set()
-
 
 master = tk.Tk()
 master.title("BetUnitCalc")
@@ -92,7 +88,6 @@ odds.set("0")
 
 label1 = tk.Label(master, text="Bankroll")
 e = tk.Entry(master, textvariable=v1)
-
 label2 = tk.Label(master, text="Units to burn")
 w = tk.Entry(master, textvariable=v2)
 
@@ -135,8 +130,7 @@ d.grid(row=4, column=2, columnspan=2,sticky=W+E+N+S)
 master.bind("-", call_minustoggle)
 master.bind("+", call_plustoggle)
 master.bind("<Return>", call_enterproc)
-master.bind("/", call_bankrollent)
-master.bind("*", call_unitent)
+master.bind("<space>", call_bankrollent)
 
 tk.mainloop()
 
