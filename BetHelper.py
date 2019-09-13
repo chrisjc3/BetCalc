@@ -72,6 +72,22 @@ def call_bankrollent(event):
     v1.set("")
     e.focus_set()
 
+def confidentUnit(event):
+
+    bank = float(v1.get())
+    umin = float(1)
+    umax = float(10)
+    conf = float(cscale.get())
+
+    lsum1.config(state=NORMAL)
+    lsum1.delete(1.0, END)
+
+    umin = round((bank*.01)*umin,2)
+    umax = round((bank*.01)*umax,2)
+    ans = round(((conf-umin)/(umax-umin)),2)
+    
+    lsum1.insert(END, str(ans))
+
 
 master = tk.Tk()
 master.title("BetUnitCalc")
@@ -85,6 +101,9 @@ v2.set("0")
 
 odds = tk.StringVar(master)
 odds.set("0")
+
+cscale = tk.Scale(orient='horizontal', from_=10, to=100, command=confidentUnit)
+clabel = tk.Label(master, text="Confidence")
 
 label1 = tk.Label(master, text="Bankroll")
 e = tk.Entry(master, textvariable=v1)
@@ -116,8 +135,11 @@ e.grid(row=1, column=0, sticky=W,padx=5)
 label2.grid(row=0, column=0, sticky=N+E,padx=5)
 w.grid(row=1, column=0, sticky=E,padx=5)
 lsum1.grid(row=2, column=0, sticky=W+E+N+S,padx=5)
-b.grid(row=3, column=0, sticky=W+E+N+S,padx=5)
-c.grid(row=4, column=0, sticky=W+E+N+S,padx=5)
+
+clabel.grid(row=3, column=0, sticky=W+E+N+S, padx=5) 
+cscale.grid(row=4, column=0, sticky=W+E+N+S, padx=5) 
+b.grid(row=5, column=0, sticky=W+E+N+S,padx=5)
+c.grid(row=6, column=0, sticky=W+E+N+S,padx=5)
 
 label3.grid(row=0, column=2,columnspan=2,sticky=W+E+N+S)
 plus_button.grid(row=1, column=2,sticky=W+E+N+S)
