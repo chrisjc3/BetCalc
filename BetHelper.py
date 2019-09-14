@@ -86,6 +86,7 @@ def confidentUnit(event):
     umax = round((bank*.01)*umax,2)
     ans = round(((conf-umin)/(umax-umin)),2)
     lsum1.insert(END, str(ans))
+    lsum1.config(state=DISABLED)
 
 
 master = tk.Tk()
