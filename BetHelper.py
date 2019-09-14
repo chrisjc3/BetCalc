@@ -17,7 +17,8 @@ def runReduce():
     lsum1.config(state=NORMAL)
     lsum1.delete(1.0, END)
     lsum1.insert(END, "Reduced Bankroll")
-
+    lsum1.config(state=DISABLED)
+    
 def runGetRates():
     try:
         bank = float(v1.get())
