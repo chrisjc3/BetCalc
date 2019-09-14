@@ -7,14 +7,16 @@ import re
 
 def getConversion(bank, unit):
     ans = round((bank*.01)*unit,2)
-    lsum1.insert(END, str(unit) + "u" + " == $ " + str(ans))
+    lsum1.insert(END, str(ans))
 
 def runReduce():
-    match = re.match(r'.+\$\s(.+)', lsum1.get("1.0",END))
+    match = re.match(r'(.+)', lsum1.get("1.0",END))
     bank = float(v1.get())
     amt = round(float(bank) - float(match.group(1)),2)
     v1.set(amt)
-    runGetRates()
+    lsum1.config(state=NORMAL)
+    lsum1.delete(1.0, END)
+    lsum1.insert(END, "Reduced Bankroll")
 
 def runGetRates():
     try:
@@ -73,19 +75,15 @@ def call_bankrollent(event):
     e.focus_set()
 
 def confidentUnit(event):
-
     bank = float(v1.get())
     umin = float(1)
     umax = float(10)
     conf = float(cscale.get())
-
     lsum1.config(state=NORMAL)
     lsum1.delete(1.0, END)
-
     umin = round((bank*.01)*umin,2)
     umax = round((bank*.01)*umax,2)
     ans = round(((conf-umin)/(umax-umin)),2)
-    
     lsum1.insert(END, str(ans))
 
 
