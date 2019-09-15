@@ -1,34 +1,26 @@
 
 import tkinter as tk
 from tkinter import BOTH, END, LEFT, RIGHT, NORMAL, DISABLED, W, E, N, S
-from tkinter.simpledialog import askstring, askinteger
-from tkinter.messagebox import showerror
 import re
 
-def getConversion(bank, unit):
-    ans = round((bank*.01)*unit,2)
-    lsum1.insert(END, str(ans))
-
-def runReduce():
-    match = re.match(r'(.+)', lsum1.get("1.0",END))
-    bank = float(v1.get())
-    amt = round(float(bank) - float(match.group(1)),2)
-    v1.set(amt)
-    lsum1.config(state=NORMAL)
-    lsum1.delete(1.0, END)
-    lsum1.insert(END, "Reduced Bankroll")
-    lsum1.config(state=DISABLED)
+def call_minustoggle(event):
+    odds_switch.set("minus")
+    odds.set("")
+    j.focus_set()
     
-def runGetRates():
+def call_plustoggle(event):
+    odds_switch.set("plus")
+    odds.set("")
+    j.focus_set()
+    
+def call_enterproc(event):
     try:
-        bank = float(v1.get())
-        unit = float(v2.get())
-        lsum1.config(state=NORMAL)
-        lsum1.delete(1.0, END)
-    except:
-        lsum1.insert(END, "Put in real numbers")
-    getConversion(bank, unit)
-    lsum1.config(state=DISABLED)
+        runGetProb()
+    except: pass
+
+def call_bankrollent(event):
+    v1.set("")
+    e.focus_set()
 
 def getProb(val):
     try:
@@ -51,47 +43,28 @@ def runGetProb():
     except:
         lsum2.insert(END, "Enter actual Odds please.")
     lsum2.config(state=DISABLED)
-
-
-def call_minustoggle(event):
-    odds_switch.set("minus")
-    odds.set("")
-    j.focus_set()
     
-def call_plustoggle(event):
-    odds_switch.set("plus")
-    odds.set("")
-    j.focus_set()
-    
-def call_enterproc(event):
-    try:
-        runGetRates()
-    except: pass
-    try:
-        runGetProb()
-    except: pass
-
-def call_bankrollent(event):
-    v1.set("")
-    e.focus_set()
-
 def confidentUnit(event):
     bank = float(v1.get())
     umin = float(1)
-    umax = float(10)
+    umax = float(100)
     conf = float(cscale.get())
-    lsum1.config(state=NORMAL)
-    lsum1.delete(1.0, END)
     umin = round((bank*.01)*umin,2)
     umax = round((bank*.01)*umax,2)
-    ans = round(((conf-umin)/(umax-umin)),2)
-    lsum1.insert(END, str(ans))
-    lsum1.config(state=DISABLED)
+    ans = round(((conf - 0) * (umax - umin) / (100 - 0) + umin),2)
+    v2.set(str(ans))
+
+def runReduce():
+    minus = float(v2.get())
+    bank = float(v1.get())
+    amt = round(float(bank) - minus,2)
+    v1.set(amt)
+    cscale.set("-1")
+    v2.set("0")
 
 
 master = tk.Tk()
 master.title("BetUnitCalc")
-##master.geometry("430x200")
 
 v1 = tk.StringVar(master)
 v1.set("0") 
@@ -102,22 +75,17 @@ v2.set("0")
 odds = tk.StringVar(master)
 odds.set("0")
 
-cscale = tk.Scale(orient='horizontal', from_=10, to=100, command=confidentUnit)
+cscale = tk.Scale(orient='horizontal', from_=-1, to=100, command=confidentUnit)
 clabel = tk.Label(master, text="Confidence")
 
-label1 = tk.Label(master, text="Bankroll")
+label1 = tk.Label(master, text="Session Amt:")
 e = tk.Entry(master, textvariable=v1)
-label2 = tk.Label(master, text="Units to burn")
+label2 = tk.Label(master, text="Minus:")
 w = tk.Entry(master, textvariable=v2)
 
-lsum1 = tk.Text(master, height=1, width=25, bg='lightgrey', relief='flat')
-lsum1.insert(END, "Waiting....")
-lsum1.config(width=25,state=DISABLED) # forbid text edition
-
-b = tk.Button(master, text="Convert", command=runGetRates)
 c = tk.Button(master, text="Placed", command=runReduce)
 
-label3 = tk.Label(master, text="Odds(+/-)")
+label3 = tk.Label(master, text="Odds(+/-):")
 j = tk.Entry(master, textvariable=odds)
 lsum2 = tk.Text(master, height=1, width=25, bg='lightgrey', relief='flat')
 lsum2.insert(END, "Waiting....")
@@ -132,14 +100,12 @@ minus_button = tk.Radiobutton(master, text="-", variable=odds_switch,
 
 label1.grid(row=0, column=0, sticky=N+W,padx=5)
 e.grid(row=1, column=0, sticky=W,padx=5)
-label2.grid(row=0, column=0, sticky=N+E,padx=5)
-w.grid(row=1, column=0, sticky=E,padx=5)
-lsum1.grid(row=2, column=0, sticky=W+E+N+S,padx=5)
+label2.grid(row=0, column=1, sticky=N+W,padx=5)
+w.grid(row=1, column=1, sticky=W,padx=5)
 
-clabel.grid(row=3, column=0, sticky=W+E+N+S, padx=5) 
-cscale.grid(row=4, column=0, sticky=W+E+N+S, padx=5) 
-b.grid(row=5, column=0, sticky=W+E+N+S,padx=5)
-c.grid(row=6, column=0, sticky=W+E+N+S,padx=5)
+clabel.grid(row=2, column=0, sticky=W+E+N+S, padx=5,columnspan=2) 
+cscale.grid(row=3, column=0, sticky=W+E+N+S, padx=5,columnspan=2) 
+c.grid(row=4, column=0, sticky=W+E+N+S,padx=5,columnspan=2)
 
 label3.grid(row=0, column=2,columnspan=2,sticky=W+E+N+S)
 plus_button.grid(row=1, column=2,sticky=W+E+N+S)
